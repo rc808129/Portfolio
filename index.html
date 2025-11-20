@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom & Scroll Overlay Effect - Final Working Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            height: 100vh;
+            overflow: hidden; 
+        }
+        
+        .main-container {
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        .nav {
+            height: 60px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            font-size: 18px;
+            position: fixed;
+            top: 10px;
+            left: 0;
+            z-index: 10;
+            color: white;
+            opacity: 0;
+            animation: fadeIn 2s ease-in 2.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .section {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        #page1 {
+            background-image: url('Gemini_Generated_Image_5etnmb5etnmb5etn (2).png');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            animation: zoomInToFit 3s ease-out forwards;
+        }
+
+        @keyframes zoomInToFit {
+            0% { transform: scale(1.5); filter: brightness(0.8); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+        
+        .seconddiv {
+            display: flex;
+            width: 40vw;
+            position: absolute;
+            left: 24vw;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .seconddiv a, .firstdiv a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .seconddiv a:hover, .firstdiv a:hover {
+            color: #00ffff;
+        }
+
+        .firstdiv {
+            position: absolute;
+            left: 5vw;
+            height: 60%;
+            width: 100px;
+        }
+
+        .firstdiv img {
+            height: 100%;
+            width: 100%;
+        }
+
+        #page2 { background: #e74c3c; z-index: 2; }
+        #page3 { background: #2ecc71; z-index: 3; }
+        #page4 { background: #9b59b6; z-index: 4; }
+
+        .scene {
+            width: 50px;
+            height: 50px;
+            perspective: 800px;
+            position: absolute;
+            right: 40px;
+            top: 5px;
+        }
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate-step 24s infinite linear;
+            top : 20px;
+            right: 10px;
+        }
+        .face {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            color: #fff;
+            font-weight: 700;
+            border: 2px solid #ecf0f1;
+            background: rgba(41, 128, 185, 0.8);
+            box-shadow: 0 0 20px rgba(41, 128, 185, 0.5);
+            backface-visibility: hidden;
+            transition: transform 0.5s, box-shadow 0.5s;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .front {
+            transform: rotateY(0deg) translateZ(25px);
+            background: #000;
+            color: #00ffff;
+            box-shadow: 0 0 50px #00ffff;
+            border: 2px solid #00ffff;
+        }
+        .back {
+            transform: rotateY(180deg) translateZ(25px);
+            background: #000;
+            color: #ff00ff;
+            box-shadow: 0 0 50px #ff00ff;
+            border: 2px solid #ff00ff;
+        }
+        .right {
+            transform: rotateY(90deg) translateZ(25px);
+            background: #000;
+            color: #ff4500;
+            box-shadow: 0 0 50px #ff4500;
+            border: 2px solid #ff4500;
+        }
+        .left {
+            transform: rotateY(-90deg) translateZ(25px);
+            background: #000;
+            color: #32cd32;
+            box-shadow: 0 0 50px #32cd32;
+            border: 2px solid #32cd32;
+        }
+        .top {
+            transform: rotateX(90deg) translateZ(25px);
+            background: #000;
+            color: #9400d3;
+            box-shadow: 0 0 50px #9400d3;
+            border: 2px solid #9400d3;
+        }
+        .bottom {
+            transform: rotateX(-90deg) translateZ(25px);
+            background: #000;
+            color: #ffd700;
+            box-shadow: 0 0 50px #ffd700;
+            border: 2px solid #ffd700;
+        }
+        @keyframes rotate-step {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            16.66% { transform: rotateY(90deg); }
+            33.33% { transform: rotateY(180deg); }
+            50% { transform: rotateY(270deg); }
+            66.66% { transform: rotateY(360deg) rotateX(90deg); }
+            83.33% { transform: rotateY(360deg) rotateX(-90deg); }
+            100% { transform: rotateX(0deg) rotateY(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="firstdiv"><a href="#page1" data-index="0"><img src="generated_image_logo.png" alt="logo"></a></div>
+        <div class="seconddiv">
+            <a href="#page1" data-index="0">Home</a>
+            <a href="#page2" data-index="1">About</a>
+            <a href="#page3" data-index="2">Skills</a>
+            <a href="#page4" data-index="3">Projects</a>
+            <a href="#page4" data-index="3">Contact</a>
+        </div>
+   
+        <div class="scene">
+            <div class="cube">
+                <div class="face front">Creative</div>
+                <div class="face back">Learner</div>
+                <div class="face right">Innovative</div>
+                <div class="face left">Dedicated</div>
+                <div class="face top">Achiever</div>
+                <div class="face bottom">Leader</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="section" id="page1"></div>
+        <div class="section" id="page2">Page 2</div>
+        <div class="section" id="page3">Page 3</div>
+        <div class="section" id="page4">Page 4</div>
+    </div>
+
+   
+    <script>
+        const mainContainer = document.querySelector('.main-container');
+        const sections = document.querySelectorAll('.section');
+
+        document.querySelectorAll('.nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetIndex = parseInt(this.getAttribute('data-index'));
+                const scrollPosition = targetIndex * window.innerHeight;
+                mainContainer.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
